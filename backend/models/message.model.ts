@@ -14,7 +14,7 @@ const messageSchema = new mongoose.Schema({
     },
 
     sender: {
-      type: String, // "user" or "bot"
+      type: String, 
       required: true, 
       enum: ["user", "bot"], //restricts values to "user" or "bot"
     },
@@ -42,3 +42,5 @@ const messageSchema = new mongoose.Schema({
 
     },
 });
+
+export const Message = mongoose.model("Message", messageSchema);
