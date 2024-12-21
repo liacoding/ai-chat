@@ -7,7 +7,8 @@
 		"rootDir": "./backend",
 		"strict": true, // Enable all strict type-checking options.
 		"esModuleInterop": true, // This will allow you to use default imports with CommonJS modules.
-		"skipLibCheck": true // only my code will be checked for types 
+		"skipLibCheck": true, // only my code will be checked for types 
+		"typeRoots": ["./types", "./node_modules/@types"]
 	},
 	"ts-node": {
 		"esm": true // ts executor will use type module when running teh code

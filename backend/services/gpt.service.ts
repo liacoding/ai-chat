@@ -1,16 +1,35 @@
 import axios from "axios";
+import {Types} from "mongoose";
 import { ENV_VARS } from "../config/envVars.js";
+import { getConversationByIdFromDB } from "../repositories/conversation.repository.js";
+import mongoose from "mongoose";
 
-export const generateAiResponseService = async (message: string) => {
+export const generateChatGPTResponseService = async (message: string, conversationId: Types.ObjectId) => {
 
     const url = "https://api.openai.com/v1/chat/completions";
 
+    const conversation = await getConversationByIdFromDB(conversationId);
+    
+    if (!conversation) {
+        throw new Error("Conversation not found");
+    }
+
+    const messageHistory = conversation.messages.map(message => {
+      return {
+        role: message.sender === "user" ? "user" : "assistant",
+        content: message.content
+      }
+    });
+
+    const messages = [
+        {"role": "system", "content": "You are a helpful assistant."},
+        ...messageHistory,  
+        {"role": "user", "content": message} 
+    ];
+
     const body = {
         "model": "gpt-3.5-turbo",
-        "messages": [
-          {"role": "system", "content": "You are a helpful assistant."},
-          {"role": "user", "content": message}
-        ],
+        "messages": messages,
         "max_tokens": 100,
         "temperature": 0.7
       };

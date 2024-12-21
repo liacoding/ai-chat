@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '@clerk/clerk-react';
-import ChatList from '../components/ChatList';
-import { Menu } from 'lucide-react'; // Import menu icon
+import ChatList from './ChatList';
+import { Menu } from 'lucide-react'; 
 
 const DashboardComponent = () => {
    const { userId, isLoaded } = useAuth();
@@ -40,7 +40,7 @@ const DashboardComponent = () => {
                z-40 
                md:block
            `}>
-               <ChatList />
+               <ChatList/>
            </div>
            
            {/* Main Content */}

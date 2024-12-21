@@ -27,3 +27,17 @@ body {
 .animate-float {
     animation: float 3s ease-in-out infinite alternate;
 }
+
+
+.clean-scrollbar::-webkit-scrollbar {
+  width: 8px;  
+}
+
+.clean-scrollbar::-webkit-scrollbar-track {
+  background: transparent;  
+}
+
+.clean-scrollbar::-webkit-scrollbar-thumb {
+  background: #d1d5db; 
+  border-radius: 4px;
+}
