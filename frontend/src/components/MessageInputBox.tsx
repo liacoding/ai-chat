@@ -1,23 +1,13 @@
 import { useState } from 'react';
 import { ArrowBigUpDash} from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import { useAuth } from '@clerk/clerk-react'; 
 import { aiChatApiService } from '../services/aiChatApi';
+import { MessageInputBoxProps, DashboardContextType } from '../types/interfaces';
 
-interface Message {
-    _id: string,
-    content: string;
-    sender: "user" | "ai";
-    createdAt: string;
-};
+const MessageInputBox = ({ setMessages, conversationId, isNewConversation = false }: MessageInputBoxProps ) => {
 
-interface Props {
-    setMessages?: React.Dispatch<React.SetStateAction<Message[]>>;
-    conversationId?: string;
-    isNewConversation?: boolean;
-}
-
-const MessageInputBox = ({ setMessages, conversationId, isNewConversation = false }: Props ) => {
+    const { handleChatCreated } = useOutletContext<DashboardContextType>();
     const [inputText, setInputText] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
@@ -32,6 +22,7 @@ const MessageInputBox = ({ setMessages, conversationId, isNewConversation = fals
         try {
             if (isNewConversation) {
                 const createConversationResponse = await aiChatApiService.createConversation(inputText.slice(0, 30));
+                handleChatCreated();
 
                 const newConversationId = createConversationResponse.conversationId;
 

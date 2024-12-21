@@ -3,13 +3,7 @@ import MessageInputBox from '../components/MessageInputBox';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { aiChatApiService } from '../services/aiChatApi';
-
-interface Message {
-    _id: string,
-    content: string;
-    sender: "user" | "ai";
-    createdAt: string;
-};
+import { Message } from '../types/interfaces';
 
 const ChatPage = () => {
     const [messages, setMessages] = useState<Message[]>([]);

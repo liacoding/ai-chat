@@ -1,13 +1,20 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '@clerk/clerk-react';
 import ChatList from './ChatList';
 import { Menu } from 'lucide-react'; 
+import { ChatListHandle } from '../types/interfaces';
 
 const DashboardComponent = () => {
+
+   const chatListRef = useRef<ChatListHandle>(null);
    const { userId, isLoaded } = useAuth();
    const navigate = useNavigate();
    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+    const handleChatCreated = () => {
+        chatListRef.current?.refresh();
+    };
 
    useEffect(() => {
        if (isLoaded && !userId) {
@@ -40,12 +47,12 @@ const DashboardComponent = () => {
                z-40 
                md:block
            `}>
-               <ChatList/>
+               <ChatList ref={chatListRef}/>
            </div>
            
            {/* Main Content */}
            <div className="flex-1 md:ml-0 bg-white">
-               <Outlet />
+               <Outlet context={{ handleChatCreated }}/>
            </div>
 
            {/* Overlay for mobile */}

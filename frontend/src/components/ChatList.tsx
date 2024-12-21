@@ -2,15 +2,10 @@ import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useAuth } from '@clerk/clerk-react';
 import { aiChatApiService } from '../services/aiChatApi'; 
+import { forwardRef, useImperativeHandle } from "react";
+import { ChatListHandle, Conversation } from '../types/interfaces';
 
-interface Conversation {
-    id: string;
-    title: string;
-    createdAt: string;
-    lastMessage: string | null; 
-}
-
-const ChatList =  () => {
+const ChatList =  forwardRef<ChatListHandle, {}> ((props, ref) => {
 
     const [conversations, setConversations] = useState<Conversation[]>([]);
     const {userId} = useAuth(); // get Clerk user Id
@@ -31,6 +26,10 @@ const ChatList =  () => {
         console.error('Error loading conversations:', error);
       }
     };
+
+    useImperativeHandle(ref, () => ({
+        refresh: loadConversations
+    }));
 
     return (
         <div className="flex flex-col h-full bg-white"> 
@@ -78,7 +77,7 @@ const ChatList =  () => {
             </div>
         </div>
     );
-};
+});
 
 
 export default ChatList;
